@@ -273,20 +273,23 @@ animations = [{
 size = Vector2(8, 14)
 
 [sub_resource type="Gradient" id="Gradient_oa1go"]
+interpolation_mode = 2
 colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 1)
 
 [sub_resource type="GradientTexture2D" id="GradientTexture2D_g2els"]
 gradient = SubResource("Gradient_oa1go")
+width = 256
+height = 256
 fill = 1
 fill_from = Vector2(0.5, 0.5)
-fill_to = Vector2(0.14102565, 0.10683761)
+fill_to = Vector2(0.15811966, 0.17948718)
 
 [node name="Player" type="CharacterBody2D" unique_id=2048558767]
 z_index = 5
 script = ExtResource("1_g2els")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1450472449]
-modulate = Color(0.70796657, 0.7079665, 0.7079665, 1)
+modulate = Color(0.8346143, 0.8346143, 0.8346143, 1)
 position = Vector2(0, -12)
 scale = Vector2(1, 1.0074801)
 sprite_frames = SubResource("SpriteFrames_t4otl")
@@ -302,8 +305,8 @@ shape = SubResource("RectangleShape2D_g2els")
 
 [node name="PointLight2D" type="PointLight2D" parent="." unique_id=1354315392]
 position = Vector2(0, -7)
-scale = Vector2(1.5599961, 1.5599961)
-energy = 0.8
+scale = Vector2(0.64202344, 0.64714414)
+color = Color(0.98333335, 1, 0.8, 1)
 shadow_enabled = true
 shadow_filter = 2
 texture = SubResource("GradientTexture2D_g2els")
