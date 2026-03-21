@@ -1,0 +1,168 @@
+[gd_scene format=4 uid="uid://bfxlaadwt6nu8"]
+
+[ext_resource type="Script" uid="uid://bspbhv2avblvk" path="res://scripts/main_menu.gd" id="1_l6cm7"]
+[ext_resource type="FontFile" uid="uid://c7271bvlk3qa1" path="res://assets/fonts/PixelOperator8-Bold.ttf" id="2_ekxnf"]
+[ext_resource type="Shader" uid="uid://bsqcm88mxj8x5" path="res://shaders/vignette.gdshader" id="2_oa1go"]
+[ext_resource type="FontFile" uid="uid://dqwua52a0wdnr" path="res://assets/fonts/PixelOperator8.ttf" id="3_bqqt6"]
+[ext_resource type="TileSet" uid="uid://chq7n4e4rj4ss" path="res://tilemaps/world_tileset.tres" id="4_wu84c"]
+[ext_resource type="PackedScene" uid="uid://fdtsqie2yog5" path="res://scenes/player.tscn" id="5_8ln24"]
+[ext_resource type="PackedScene" uid="uid://cnev7kmduj1c5" path="res://scenes/lava.tscn" id="6_rtw2f"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_bqqt6"]
+font = ExtResource("2_ekxnf")
+font_size = 40
+font_color = Color(1, 0.9583333, 0.9, 1)
+outline_color = Color(0.078431375, 0.078431375, 0.07058824, 1)
+shadow_size = 16
+shadow_color = Color(0, 0, 0, 1)
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_rtw2f"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_oa1go"]
+bg_color = Color(0.07949027, 0.07661467, 0.07086358, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_tbmy8"]
+shader = ExtResource("2_oa1go")
+shader_parameter/alpha = 0.5
+shader_parameter/inner_radius = 0.0
+shader_parameter/outer_radius = 1.5
+
+[sub_resource type="Gradient" id="Gradient_oa1go"]
+colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_tbmy8"]
+gradient = SubResource("Gradient_oa1go")
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(0.14102565, 0.10683761)
+
+[node name="Main Menu" type="Node2D" unique_id=183572793]
+script = ExtResource("1_l6cm7")
+
+[node name="Title" type="Label" parent="." unique_id=1559597710]
+z_index = 100
+offset_left = 704.0
+offset_top = 104.0
+offset_right = 1140.0
+offset_bottom = 200.0
+text = "Bit Runner"
+label_settings = SubResource("LabelSettings_bqqt6")
+horizontal_alignment = 1
+vertical_alignment = 1
+uppercase = true
+
+[node name="Buttons" type="Control" parent="." unique_id=1720415515]
+z_index = 100
+layout_mode = 3
+anchors_preset = 0
+offset_left = 48.0
+offset_top = -48.0
+offset_right = 88.0
+offset_bottom = -8.0
+
+[node name="StartButton" type="Button" parent="Buttons" unique_id=701776046]
+layout_mode = 0
+offset_left = 880.0
+offset_top = 256.0
+offset_right = 1011.0
+offset_bottom = 296.86383
+scale = Vector2(1.42718, 1.5661765)
+theme_override_colors/font_color = Color(1, 0.95686275, 0.9019608, 1)
+theme_override_fonts/font = ExtResource("3_bqqt6")
+theme_override_font_sizes/font_size = 20
+theme_override_styles/normal = SubResource("StyleBoxEmpty_rtw2f")
+theme_override_styles/hover = SubResource("StyleBoxFlat_oa1go")
+text = "Start"
+alignment = 2
+
+[node name="CreditsButton" type="Button" parent="Buttons" unique_id=873985986]
+layout_mode = 0
+offset_left = 880.0
+offset_top = 320.0
+offset_right = 1011.0
+offset_bottom = 360.86383
+scale = Vector2(1.42718, 1.5661765)
+theme_override_colors/font_color = Color(1, 0.95686275, 0.9019608, 1)
+theme_override_fonts/font = ExtResource("3_bqqt6")
+theme_override_font_sizes/font_size = 20
+theme_override_styles/normal = SubResource("StyleBoxEmpty_rtw2f")
+theme_override_styles/hover = SubResource("StyleBoxFlat_oa1go")
+text = "Credits
+"
+alignment = 2
+
+[node name="QuitButton" type="Button" parent="Buttons" unique_id=113537431]
+layout_mode = 0
+offset_left = 880.0
+offset_top = 384.0
+offset_right = 1011.0
+offset_bottom = 424.86383
+scale = Vector2(1.42718, 1.5661765)
+theme_override_colors/font_color = Color(1, 0.95686275, 0.9019608, 1)
+theme_override_fonts/font = ExtResource("3_bqqt6")
+theme_override_font_sizes/font_size = 20
+theme_override_styles/normal = SubResource("StyleBoxEmpty_rtw2f")
+theme_override_styles/hover = SubResource("StyleBoxFlat_oa1go")
+text = "Quit"
+alignment = 2
+
+[node name="Vignette" type="ColorRect" parent="." unique_id=550630792]
+visible = false
+z_index = 50
+material = SubResource("ShaderMaterial_tbmy8")
+offset_right = 100.0
+offset_bottom = 100.0
+scale = Vector2(11.520001, 6.5199995)
+
+[node name="PointLight2D2" type="PointLight2D" parent="." unique_id=931650463]
+position = Vector2(704, 144)
+scale = Vector2(12, 12)
+color = Color(0.97333336, 1, 0.68, 1)
+shadow_enabled = true
+shadow_filter = 2
+texture = SubResource("GradientTexture2D_tbmy8")
+
+[node name="PointLight2D3" type="PointLight2D" parent="." unique_id=1759613064]
+position = Vector2(1192, 232)
+scale = Vector2(12, 12)
+color = Color(0.68, 1, 0.9733333, 1)
+shadow_enabled = true
+shadow_filter = 2
+texture = SubResource("GradientTexture2D_tbmy8")
+
+[node name="Foreground" type="TileMapLayer" parent="." unique_id=459629760]
+position = Vector2(35, -20)
+scale = Vector2(7, 7)
+tile_map_data = PackedByteArray("AAAAAAUAAAAEAAEAAAABAAUAAAAFAAEAAAACAAUAAAAFAAEAAAADAAUAAAAEAAEAAAAAAAQAAAAEAAAAAAABAAQAAAAEAAAAAAACAAQAAAAEAAAAAAAEAAUAAAAFAAAAAAAFAAUAAAAEAAEAAAAGAAUAAAAEAAEAAAAHAAUAAAAFAAAAAAAGAAQAAAAFAAEAAAAHAAQAAAAEAAAAAAAIAAUAAAAEAAEAAAAJAAUAAAAFAAAAAAD//wQAAAAEAAAAAAAKAAUAAAAEAAEAAAD//wUAAAAFAAEAAAD//wYAAAAFAAEAAAAAAAYAAAAEAAEAAAABAAYAAAAFAAEAAAACAAYAAAAEAAEAAAADAAYAAAAEAAEAAAAEAAYAAAAEAAEAAAAFAAYAAAAFAAAAAAAGAAYAAAAEAAEAAAAHAAYAAAAEAAEAAAAIAAYAAAAEAAEAAAAJAAYAAAAEAAEAAAAKAAYAAAAFAAAAAAAIAAQAAAAEAAAAAAD//wEAAAAEAAEAAAAAAAEAAAAEAAEAAAABAAAAAAAFAAAAAAACAAAAAAAEAAEAAAD//wAAAAAFAAEAAAAAAAAAAAAEAAEAAAAFAAQAAAAEAAEAAAAGAAMAAAAEAAAAAAAFAAMAAAAEAAAAAAAEAAQAAAAEAAAAAAAFAAIAAAAHAAYAAAAEAAMAAAAIAAUAAAACAAMAAAAFAAUAAAACAAIAAAAFAAMAAAAHAAMAAAAEAAgAAAAJAAQAAAABAAcAAAADAAAAAAAKAAIAAAAEAAAAAAALAAIAAAAFAAAAAAAEAAEAAAAGAAAAAAAFAAEAAAADAAQAAAABAAcAAAA=")
+tile_set = ExtResource("4_wu84c")
+
+[node name="Background" type="TileMapLayer" parent="." unique_id=1016841327]
+z_index = -1
+position = Vector2(35, -20)
+scale = Vector2(7, 7)
+tile_map_data = PackedByteArray("AAD//wQAAAACAA4AAAD//wUAAAACAA8AAAD//wYAAAACAA8AAAAAAAQAAAACAA4AAAAAAAUAAAACAA8AAAAAAAYAAAACAA8AAAABAAQAAAACAA4AAAABAAUAAAACAA8AAAABAAYAAAACAA8AAAACAAQAAAACAA4AAAACAAUAAAACAA8AAAACAAYAAAACAA8AAAADAAQAAAACAA4AAAADAAUAAAACAA8AAAADAAYAAAACAA8AAAAEAAQAAAACAA4AAAAEAAUAAAACAA8AAAAEAAYAAAACAA8AAAAFAAQAAAACAA4AAAAFAAUAAAACAA8AAAAFAAYAAAACAA8AAAAGAAQAAAACAA4AAAAGAAUAAAACAA8AAAAGAAYAAAACAA8AAAAHAAQAAAACAA4AAAAHAAUAAAACAA8AAAAHAAYAAAACAA8AAAAIAAQAAAACAA4AAAAIAAUAAAACAA8AAAAIAAYAAAACAA8AAAAJAAQAAAACAA4AAAAJAAUAAAACAA8AAAAJAAYAAAACAA8AAAD//wMAAAACAA0AAAAAAAMAAAACAA0AAAABAAMAAAACAA0AAAACAAMAAAACAA0AAAADAAMAAAACAA0AAAAEAAMAAAACAA0AAAAFAAMAAAACAA0AAAAGAAMAAAACAA0AAAAHAAMAAAACAA0AAAAIAAMAAAACAA0AAAAJAAMAAAACAA0AAAD//wIAAAACAA0AAAAAAAIAAAACAA0AAAABAAIAAAACAA0AAAACAAIAAAACAA0AAAADAAIAAAACAA0AAAAEAAIAAAACAA0AAAAFAAIAAAACAA0AAAAGAAIAAAACAA0AAAAHAAIAAAACAA0AAAAIAAIAAAACAA0AAAAJAAIAAAACAA0AAAD//wEAAAACAAwAAAAAAAEAAAACAAwAAAABAAEAAAACAAwAAAACAAEAAAACAAwAAAADAAEAAAACAAwAAAAEAAEAAAACAAwAAAAFAAEAAAACAAwAAAAGAAEAAAACAAwAAAAHAAEAAAACAAwAAAAIAAEAAAACAAwAAAAJAAEAAAACAAwAAAD//wAAAAACAAsAAAAAAAAAAAACAAsAAAABAAAAAAACAAsAAAACAAAAAAACAAsAAAADAAAAAAACAAsAAAAEAAAAAAACAAsAAAAFAAAAAAACAAsAAAAGAAAAAAACAAsAAAAHAAAAAAACAAsAAAAIAAAAAAACAAsAAAAJAAAAAAACAAsAAAAKAAUAAAACAA8AAAAKAAYAAAACAA8AAAAKAAQAAAACAA4AAAAKAAIAAAACAA0AAAAKAAMAAAACAA0AAAAKAAEAAAACAAwAAAAKAAAAAAACAAsAAAA=")
+tile_set = ExtResource("4_wu84c")
+
+[node name="Lava" parent="." unique_id=1324702339 instance=ExtResource("6_rtw2f")]
+position = Vector2(544, 584)
+scale = Vector2(7, 7)
+rise_speed = 0.0
+
+[node name="Player" parent="." unique_id=2048558767 instance=ExtResource("5_8ln24")]
+position = Vector2(96, 432)
+scale = Vector2(9, 9)
+speed = 0.0
+dash_speed = 0
+jump_velocity = 0.0
+disabled = true
+
+[node name="CanvasModulate" type="CanvasModulate" parent="." unique_id=142348287]
+color = Color(0.34407577, 0.34407574, 0.34407574, 1)
+
+[connection signal="pressed" from="Buttons/StartButton" to="." method="_on_start_button_pressed"]
+[connection signal="pressed" from="Buttons/CreditsButton" to="." method="_on_credits_button_pressed"]
+[connection signal="pressed" from="Buttons/QuitButton" to="." method="_on_quit_button_pressed"]
