@@ -45,4 +45,4 @@ func _on_entered_trigger_body_entered(body: Node2D) -> void:
 	entered_trigger.set_deferred("monitoring", false)
 
 	entered_sfx.play()
-	game_scene.advance_lava(position + Vector2(0, 50))
+	game_scene.advance_lava(global_position + Vector2(0, 50))

@@ -394,7 +394,6 @@ collision_enabled = false
 
 [node name="Lava" parent="." unique_id=1324702339 instance=ExtResource("4_lbhrr")]
 position = Vector2(0, 266)
-rise_speed = 12.5
 
 [node name="GPUParticles2D" type="GPUParticles2D" parent="." unique_id=1199172269]
 z_index = 100

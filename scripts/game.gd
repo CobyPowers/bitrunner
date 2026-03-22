@@ -7,9 +7,6 @@ const CAMERA_ZOOM_EASE_DURATION = 1.5
 const CAMERA_TILT_EASE_DURATION = 0.75
 const CAMERA_EFFECT_EASE_DURATION = 0.75
 const MUSIC_EASE_DURATION = 1.5
-const LAVA_RISE_DURATION = 3
-
-const LAVA_RISE_SPEED = 12.5
 
 const RAGE_MODE_TIME_SCALE = 0.25
 const RAGE_MODE_MUSIC_PITCH = 0.4
@@ -140,14 +137,10 @@ func trigger_game_over():
 	show_game_over_ui()
 	game_over_timer.start()
 
-func advance_lava(position: Vector2):
-	lava.rise_speed = 0
-	var tween = get_tree().create_tween().set_ignore_time_scale(true).set_trans(EASE_STYLE).set_ease(EASE_DIRECTION)
-	tween.tween_property(lava, "position:y", position.y, LAVA_RISE_DURATION)	
-	lava.rise_speed = LAVA_RISE_SPEED
+func advance_lava(new_position: Vector2):
+	lava.advance(new_position)
 
 func _ready() -> void:
-	lava.rise_speed = LAVA_RISE_SPEED
 	camera.zoom -= Vector2.ONE
 	blackout.set_active(true)
 	blackout.transition(func(): pass)
