@@ -1,24 +1,46 @@
 [gd_resource type="AudioBusLayout" format=3 uid="uid://pq37juym860a"]
 
+[sub_resource type="AudioEffectLowPassFilter" id="AudioEffectLowPassFilter_j3pel"]
+resource_name = "LowPassFilter"
+cutoff_hz = 1000.0
+
 [sub_resource type="AudioEffectReverb" id="AudioEffectReverb_j3pel"]
+resource_name = "Reverb"
+room_size = 0.3
+spread = 0.5
+hipass = 0.25
+dry = 0.75
+
+[sub_resource type="AudioEffectDistortion" id="AudioEffectDistortion_j3pel"]
+resource_name = "Distortion"
+drive = 0.3
+
+[sub_resource type="AudioEffectReverb" id="AudioEffectReverb_g28q7"]
 resource_name = "Reverb"
 room_size = 0.25
 damping = 0.25
 spread = 0.5
+hipass = 0.1
 dry = 0.75
 
-[sub_resource type="AudioEffectLowPassFilter" id="AudioEffectLowPassFilter_j3pel"]
-resource_name = "LowPassFilter"
-cutoff_hz = 1250.0
-
 [resource]
-bus/0/effect/0/effect = SubResource("AudioEffectReverb_j3pel")
-bus/0/effect/0/enabled = false
-bus/0/effect/1/effect = SubResource("AudioEffectLowPassFilter_j3pel")
-bus/0/effect/1/enabled = false
+bus/0/effect/0/effect = SubResource("AudioEffectLowPassFilter_j3pel")
+bus/0/effect/0/enabled = true
 bus/1/name = &"Music"
 bus/1/solo = false
 bus/1/mute = false
 bus/1/bypass_fx = false
 bus/1/volume_db = -5.625
 bus/1/send = &"Master"
+bus/1/effect/0/effect = SubResource("AudioEffectReverb_j3pel")
+bus/1/effect/0/enabled = false
+bus/1/effect/1/effect = SubResource("AudioEffectDistortion_j3pel")
+bus/1/effect/1/enabled = false
+bus/2/name = &"SFX"
+bus/2/solo = false
+bus/2/mute = false
+bus/2/bypass_fx = false
+bus/2/volume_db = -8.793672
+bus/2/send = &"Master"
+bus/2/effect/0/effect = SubResource("AudioEffectReverb_g28q7")
+bus/2/effect/0/enabled = true

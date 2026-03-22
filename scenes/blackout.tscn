@@ -1,0 +1,14 @@
+[gd_scene format=3 uid="uid://dr2e2s2na3nfl"]
+
+[ext_resource type="Script" uid="uid://c87qrm8nx6hir" path="res://scripts/blackout.gd" id="1_08rqe"]
+
+[node name="Blackout" type="ColorRect" unique_id=984022916]
+modulate = Color(1, 1, 1, 0)
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.07683582, 0.07683582, 0.07683582, 1)
+script = ExtResource("1_08rqe")

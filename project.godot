@@ -11,13 +11,21 @@ config_version=5
 [application]
 
 config/name="Rage Game"
-run/main_scene="uid://bmnrkoco68rdd"
+run/main_scene="uid://bfxlaadwt6nu8"
 config/features=PackedStringArray("4.6", "Forward Plus")
 config/icon="res://icon.svg"
+
+[audio]
+
+buses/default_bus_layout="uid://pq37juym860a"
 
 [display]
 
 window/stretch/mode="canvas_items"
+
+[editor]
+
+movie_writer/movie_file="/home/coby/Videos/BitRunner.avi"
 
 [input]
 

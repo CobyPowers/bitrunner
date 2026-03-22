@@ -2,11 +2,21 @@
 
 [ext_resource type="Script" uid="uid://bspbhv2avblvk" path="res://scripts/main_menu.gd" id="1_l6cm7"]
 [ext_resource type="FontFile" uid="uid://c7271bvlk3qa1" path="res://assets/fonts/PixelOperator8-Bold.ttf" id="2_ekxnf"]
-[ext_resource type="Shader" uid="uid://bsqcm88mxj8x5" path="res://shaders/vignette.gdshader" id="2_oa1go"]
+[ext_resource type="AudioStream" uid="uid://bx4dhq1v6yutd" path="res://assets/music/return_of_8_bit.mp3" id="2_tbmy8"]
 [ext_resource type="FontFile" uid="uid://dqwua52a0wdnr" path="res://assets/fonts/PixelOperator8.ttf" id="3_bqqt6"]
 [ext_resource type="TileSet" uid="uid://chq7n4e4rj4ss" path="res://tilemaps/world_tileset.tres" id="4_wu84c"]
 [ext_resource type="PackedScene" uid="uid://fdtsqie2yog5" path="res://scenes/player.tscn" id="5_8ln24"]
+[ext_resource type="PackedScene" uid="uid://dr2e2s2na3nfl" path="res://scenes/blackout.tscn" id="5_jk1qb"]
 [ext_resource type="PackedScene" uid="uid://cnev7kmduj1c5" path="res://scenes/lava.tscn" id="6_rtw2f"]
+[ext_resource type="PackedScene" uid="uid://lnfpysj7noy4" path="res://scenes/crt_filter.tscn" id="9_jk1qb"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_jk1qb"]
+font = ExtResource("3_bqqt6")
+font_color = Color(1, 0.9583333, 0.9, 1)
+outline_color = Color(0.078431375, 0.078431375, 0.07058824, 1)
+shadow_size = 8
+shadow_color = Color(0, 0, 0, 1)
+shadow_offset = Vector2(0, 0)
 
 [sub_resource type="LabelSettings" id="LabelSettings_bqqt6"]
 font = ExtResource("2_ekxnf")
@@ -15,21 +25,7 @@ font_color = Color(1, 0.9583333, 0.9, 1)
 outline_color = Color(0.078431375, 0.078431375, 0.07058824, 1)
 shadow_size = 16
 shadow_color = Color(0, 0, 0, 1)
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_rtw2f"]
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_oa1go"]
-bg_color = Color(0.07949027, 0.07661467, 0.07086358, 1)
-corner_radius_top_left = 8
-corner_radius_top_right = 8
-corner_radius_bottom_right = 8
-corner_radius_bottom_left = 8
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_tbmy8"]
-shader = ExtResource("2_oa1go")
-shader_parameter/alpha = 0.5
-shader_parameter/inner_radius = 0.0
-shader_parameter/outer_radius = 1.5
+shadow_offset = Vector2(0, 0)
 
 [sub_resource type="Gradient" id="Gradient_oa1go"]
 colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 1)
@@ -43,104 +39,152 @@ fill_to = Vector2(0.14102565, 0.10683761)
 [node name="Main Menu" type="Node2D" unique_id=183572793]
 script = ExtResource("1_l6cm7")
 
-[node name="Title" type="Label" parent="." unique_id=1559597710]
-z_index = 100
-offset_left = 704.0
-offset_top = 104.0
-offset_right = 1140.0
+[node name="UI" type="CanvasLayer" parent="." unique_id=69706106]
+
+[node name="AuthorText" type="Label" parent="UI" unique_id=2097559901]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -268.0
+offset_top = 184.0
+offset_right = -80.0
 offset_bottom = 200.0
+grow_horizontal = 0
+pivot_offset_ratio = Vector2(0.5, 0.5)
+text = "By Coby Powers"
+label_settings = SubResource("LabelSettings_jk1qb")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="TitleText" type="Label" parent="UI" unique_id=1559597710]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -480.0
+offset_top = 104.0
+offset_right = -44.0
+offset_bottom = 200.0
+grow_horizontal = 0
+pivot_offset_ratio = Vector2(0.5, 0.5)
 text = "Bit Runner"
 label_settings = SubResource("LabelSettings_bqqt6")
 horizontal_alignment = 1
 vertical_alignment = 1
 uppercase = true
 
-[node name="Buttons" type="Control" parent="." unique_id=1720415515]
-z_index = 100
+[node name="Buttons" type="Control" parent="UI" unique_id=1720415515]
 layout_mode = 3
-anchors_preset = 0
-offset_left = 48.0
-offset_top = -48.0
-offset_right = 88.0
-offset_bottom = -8.0
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -440.0
+offset_top = 216.0
+offset_right = -40.0
+offset_bottom = 448.0
+grow_horizontal = 0
 
-[node name="StartButton" type="Button" parent="Buttons" unique_id=701776046]
-layout_mode = 0
-offset_left = 880.0
-offset_top = 256.0
-offset_right = 1011.0
-offset_bottom = 296.86383
+[node name="StartButton" type="Button" parent="UI/Buttons" unique_id=701776046]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -224.0
+offset_right = -93.0
+offset_bottom = 40.86383
+grow_horizontal = 0
 scale = Vector2(1.42718, 1.5661765)
 theme_override_colors/font_color = Color(1, 0.95686275, 0.9019608, 1)
+theme_override_colors/font_pressed_color = Color(0.97185, 0.43175912, 0.9601155, 1)
+theme_override_colors/font_hover_color = Color(0.97701615, 0.593401, 0.9608422, 1)
 theme_override_fonts/font = ExtResource("3_bqqt6")
-theme_override_font_sizes/font_size = 20
-theme_override_styles/normal = SubResource("StyleBoxEmpty_rtw2f")
-theme_override_styles/hover = SubResource("StyleBoxFlat_oa1go")
+theme_override_font_sizes/font_size = 16
 text = "Start"
+flat = true
 alignment = 2
 
-[node name="CreditsButton" type="Button" parent="Buttons" unique_id=873985986]
-layout_mode = 0
-offset_left = 880.0
-offset_top = 320.0
-offset_right = 1011.0
-offset_bottom = 360.86383
+[node name="CreditsButton" type="Button" parent="UI/Buttons" unique_id=873985986]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -224.0
+offset_top = 64.0
+offset_right = -93.0
+offset_bottom = 104.86383
+grow_horizontal = 0
 scale = Vector2(1.42718, 1.5661765)
 theme_override_colors/font_color = Color(1, 0.95686275, 0.9019608, 1)
+theme_override_colors/font_pressed_color = Color(0.97185, 0.43175912, 0.9601155, 1)
+theme_override_colors/font_hover_color = Color(0.97701615, 0.593401, 0.9608422, 1)
 theme_override_fonts/font = ExtResource("3_bqqt6")
-theme_override_font_sizes/font_size = 20
-theme_override_styles/normal = SubResource("StyleBoxEmpty_rtw2f")
-theme_override_styles/hover = SubResource("StyleBoxFlat_oa1go")
+theme_override_font_sizes/font_size = 16
 text = "Credits
 "
+flat = true
 alignment = 2
 
-[node name="QuitButton" type="Button" parent="Buttons" unique_id=113537431]
-layout_mode = 0
-offset_left = 880.0
-offset_top = 384.0
-offset_right = 1011.0
-offset_bottom = 424.86383
+[node name="QuitButton" type="Button" parent="UI/Buttons" unique_id=113537431]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -224.0
+offset_top = 128.0
+offset_right = -93.0
+offset_bottom = 168.86383
+grow_horizontal = 0
 scale = Vector2(1.42718, 1.5661765)
 theme_override_colors/font_color = Color(1, 0.95686275, 0.9019608, 1)
+theme_override_colors/font_pressed_color = Color(0.97185, 0.43175912, 0.9601155, 1)
+theme_override_colors/font_hover_color = Color(0.97701615, 0.593401, 0.9608422, 1)
 theme_override_fonts/font = ExtResource("3_bqqt6")
-theme_override_font_sizes/font_size = 20
-theme_override_styles/normal = SubResource("StyleBoxEmpty_rtw2f")
-theme_override_styles/hover = SubResource("StyleBoxFlat_oa1go")
+theme_override_font_sizes/font_size = 16
 text = "Quit"
+flat = true
 alignment = 2
 
-[node name="Vignette" type="ColorRect" parent="." unique_id=550630792]
-visible = false
-z_index = 50
-material = SubResource("ShaderMaterial_tbmy8")
-offset_right = 100.0
-offset_bottom = 100.0
-scale = Vector2(11.520001, 6.5199995)
+[node name="CRTFilter" parent="UI" unique_id=998139678 instance=ExtResource("9_jk1qb")]
+mouse_filter = 2
 
-[node name="PointLight2D2" type="PointLight2D" parent="." unique_id=931650463]
-position = Vector2(704, 144)
-scale = Vector2(12, 12)
-color = Color(0.97333336, 1, 0.68, 1)
-energy = 0.8
-shadow_enabled = true
-shadow_filter = 2
-texture = SubResource("GradientTexture2D_tbmy8")
+[node name="Blackout" parent="UI" unique_id=984022916 instance=ExtResource("5_jk1qb")]
 
-[node name="PointLight2D3" type="PointLight2D" parent="." unique_id=1759613064]
-position = Vector2(1192, 232)
-scale = Vector2(12, 12)
-color = Color(0.68, 1, 0.9733333, 1)
-energy = 0.8
-shadow_enabled = true
-shadow_filter = 2
-texture = SubResource("GradientTexture2D_tbmy8")
+[node name="Music" type="AudioStreamPlayer2D" parent="." unique_id=1430058042]
+position = Vector2(0, 26)
+stream = ExtResource("2_tbmy8")
+volume_db = -10.0
+autoplay = true
+attenuation = 0.0
+bus = &"Music"
+parameters/looping = true
 
 [node name="Foreground" type="TileMapLayer" parent="." unique_id=459629760]
 position = Vector2(35, -20)
 scale = Vector2(7, 7)
 tile_map_data = PackedByteArray("AAAAAAUAAAAEAAEAAAABAAUAAAAFAAEAAAACAAUAAAAFAAEAAAADAAUAAAAEAAEAAAAAAAQAAAAEAAAAAAABAAQAAAAEAAAAAAACAAQAAAAEAAAAAAAEAAUAAAAFAAAAAAAFAAUAAAAEAAEAAAAGAAUAAAAEAAEAAAAHAAUAAAAFAAAAAAAGAAQAAAAFAAEAAAAHAAQAAAAEAAAAAAAIAAUAAAAEAAEAAAAJAAUAAAAFAAAAAAD//wQAAAAEAAAAAAAKAAUAAAAEAAEAAAD//wUAAAAFAAEAAAD//wYAAAAFAAEAAAAAAAYAAAAEAAEAAAABAAYAAAAFAAEAAAACAAYAAAAEAAEAAAADAAYAAAAEAAEAAAAEAAYAAAAEAAEAAAAFAAYAAAAFAAAAAAAGAAYAAAAEAAEAAAAHAAYAAAAEAAEAAAAIAAYAAAAEAAEAAAAJAAYAAAAEAAEAAAAKAAYAAAAFAAAAAAAIAAQAAAAEAAAAAAD//wEAAAAEAAEAAAAAAAEAAAAEAAEAAAABAAAAAAAFAAAAAAACAAAAAAAEAAEAAAD//wAAAAAFAAEAAAAAAAAAAAAEAAEAAAAFAAQAAAAEAAEAAAAGAAMAAAAEAAAAAAAFAAMAAAAEAAAAAAAEAAQAAAAEAAAAAAAFAAIAAAAHAAYAAAAEAAMAAAAIAAUAAAACAAMAAAAFAAUAAAACAAIAAAAFAAMAAAAHAAMAAAAEAAgAAAAJAAQAAAABAAcAAAADAAAAAAAKAAIAAAAEAAAAAAALAAIAAAAFAAAAAAAEAAEAAAAGAAAAAAAFAAEAAAADAAQAAAABAAcAAAA=")
 tile_set = ExtResource("4_wu84c")
+
+[node name="PointLight2D2" type="PointLight2D" parent="Foreground" unique_id=931650463]
+position = Vector2(96.71428, 10.857142)
+scale = Vector2(1.6057142, 1.6057142)
+color = Color(0.8147413, 0.5759782, 0, 1)
+energy = 0.4
+shadow_filter = 2
+texture = SubResource("GradientTexture2D_tbmy8")
+
+[node name="PointLight2D3" type="PointLight2D" parent="Foreground" unique_id=1759613064]
+position = Vector2(162.99998, 46.285713)
+scale = Vector2(1.6057142, 1.6057142)
+color = Color(0.2637792, 0.79708207, 0.9999996, 1)
+energy = 0.4
+shadow_filter = 2
+texture = SubResource("GradientTexture2D_tbmy8")
+
+[node name="PointLight2D4" type="PointLight2D" parent="Foreground" unique_id=1403200255]
+position = Vector2(124.14284, 25.714285)
+scale = Vector2(1.2345531, 1.2458371)
+energy = 0.62
+shadow_filter = 2
+texture = SubResource("GradientTexture2D_tbmy8")
 
 [node name="Background" type="TileMapLayer" parent="." unique_id=1016841327]
 z_index = -1
@@ -155,15 +199,17 @@ scale = Vector2(7, 7)
 rise_speed = 0.0
 
 [node name="Player" parent="." unique_id=2048558767 instance=ExtResource("5_8ln24")]
-position = Vector2(96, 432)
+position = Vector2(128, 432)
 scale = Vector2(9, 9)
 speed = 0.0
+dash_speed = 0.0
 jump_velocity = 0.0
+gravity_scale = 0
 disabled = true
 
 [node name="CanvasModulate" type="CanvasModulate" parent="." unique_id=142348287]
-color = Color(0.34407577, 0.34407574, 0.34407574, 1)
+color = Color(0.17641899, 0.17641914, 0.17641902, 1)
 
-[connection signal="pressed" from="Buttons/StartButton" to="." method="_on_start_button_pressed"]
-[connection signal="pressed" from="Buttons/CreditsButton" to="." method="_on_credits_button_pressed"]
-[connection signal="pressed" from="Buttons/QuitButton" to="." method="_on_quit_button_pressed"]
+[connection signal="pressed" from="UI/Buttons/StartButton" to="." method="_on_start_button_pressed"]
+[connection signal="pressed" from="UI/Buttons/CreditsButton" to="." method="_on_credits_button_pressed"]
+[connection signal="pressed" from="UI/Buttons/QuitButton" to="." method="_on_quit_button_pressed"]

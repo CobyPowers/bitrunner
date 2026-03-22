@@ -8,31 +8,39 @@ extends CharacterBody2D
 @export var disabled = false
 
 @onready var animated_sprite = $AnimatedSprite2D
+@onready var jump_sfx = $Jump
+@onready var hit_sfx = $Hit
 
 var dashing = false
 
-func double_speed():
+func overcharge():
 	speed *= 3.5
 	dash_speed *= 3.5
 	jump_velocity *= 2.0
 	gravity_scale *= 3.5
 
-func reset_speed():
+func reset():
 	speed = 100.0
 	dash_speed = 150.0
 	jump_velocity = 300.0
 	gravity_scale = 1
 
+func kill():
+	hit_sfx.play()
+	disabled = true
+
 func _physics_process(delta: float) -> void:
-	if disabled:
-		return
-	
 	# Add the gravity
 	if not is_on_floor():
 		velocity += get_gravity() * gravity_scale * delta
 
+	# If disabled, don't process input
+	if disabled:
+		return
+
 	# Handle jump
 	if Input.is_action_just_pressed("jump") and is_on_floor():
+		jump_sfx.play()
 		velocity.y = -jump_velocity
 
 	# Get movement direction

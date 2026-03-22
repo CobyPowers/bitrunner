@@ -2,6 +2,8 @@
 
 [ext_resource type="Texture2D" uid="uid://dphn4gf2aqoqn" path="res://assets/sprites/knight.png" id="1_3vyb7"]
 [ext_resource type="Script" uid="uid://suwafce0agy" path="res://scripts/player.gd" id="1_g2els"]
+[ext_resource type="AudioStream" uid="uid://b4bxgsuqj5bir" path="res://assets/sounds/jump.wav" id="3_qhqgy"]
+[ext_resource type="AudioStream" uid="uid://dw6oa6p1mfk2g" path="res://assets/sounds/hurt.wav" id="4_dqkch"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_a8ls1"]
 atlas = ExtResource("1_3vyb7")
@@ -286,6 +288,8 @@ fill_to = Vector2(0.15811966, 0.17948718)
 
 [node name="Player" type="CharacterBody2D" unique_id=2048558767]
 z_index = 5
+collision_layer = 3
+collision_mask = 3
 script = ExtResource("1_g2els")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1450472449]
@@ -307,6 +311,18 @@ shape = SubResource("RectangleShape2D_g2els")
 position = Vector2(0, -7)
 scale = Vector2(0.64202344, 0.64714414)
 color = Color(0.98333335, 1, 0.8, 1)
+energy = 0.3
 shadow_enabled = true
 shadow_filter = 2
 texture = SubResource("GradientTexture2D_g2els")
+
+[node name="Jump" type="AudioStreamPlayer2D" parent="." unique_id=18341412]
+position = Vector2(0, 26)
+stream = ExtResource("3_qhqgy")
+bus = &"SFX"
+
+[node name="Hit" type="AudioStreamPlayer2D" parent="." unique_id=1088789047]
+position = Vector2(0, 52)
+stream = ExtResource("4_dqkch")
+volume_db = 5.0
+bus = &"SFX"

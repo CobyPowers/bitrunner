@@ -1,0 +1,36 @@
+[gd_scene format=3 uid="uid://lnfpysj7noy4"]
+
+[ext_resource type="Shader" uid="uid://gkbqu8osl58f" path="res://shaders/crt.gdshader" id="1_ntrj8"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_iywne"]
+shader = ExtResource("1_ntrj8")
+shader_parameter/brightness = 1.02
+shader_parameter/contrast = 0.9930000471675
+shader_parameter/saturation = 1.1
+shader_parameter/gamma = 1.05
+shader_parameter/curvature = 0.0
+shader_parameter/corner_soften = 0.0800000038
+shader_parameter/vignette = 0.47200002242
+shader_parameter/scanline_strength = 0.1670000079325
+shader_parameter/scanline_density = 2.40000009025
+shader_parameter/interlace_strength = 0.2
+shader_parameter/mask_strength = 0.22
+shader_parameter/mask_scale = 1.0
+shader_parameter/chroma_offset_px = 1.5030000713925
+shader_parameter/luma_smear_px = 1.2430000590425
+shader_parameter/jitter_px = 0.6950000330125
+shader_parameter/wobble_px = 0.0
+shader_parameter/tape_noise = 0.50000002375
+shader_parameter/tape_lines = 0.1790000085025
+shader_parameter/roll_speed = 0.426000020235
+shader_parameter/roll_strength = 0.0850000040375
+shader_parameter/glow_strength = 0.27200001292
+shader_parameter/glow_threshold = 0.422000020045
+
+[node name="CRTFilter" type="ColorRect" unique_id=998139678]
+material = SubResource("ShaderMaterial_iywne")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2

@@ -1,134 +1,193 @@
 shader_type canvas_item;
 render_mode unshaded;
 
-uniform sampler2D screen_texture : hint_screen_texture, repeat_disable, filter_linear_mipmap;
+// Full-screen post-process: reads the already-rendered frame. :contentReference[oaicite:1]{index=1}
+uniform sampler2D screen_texture : hint_screen_texture, repeat_disable, filter_nearest;
 
-// overall image
-uniform float pixel_size : hint_range(1.0, 4.0) = 2.0;
-uniform float lod_blur : hint_range(0.0, 2.0) = 0.7;
-uniform float chroma_offset_px : hint_range(0.0, 3.0) = 0.8;
-uniform float saturation : hint_range(0.0, 2.0) = 0.78;
-uniform float contrast : hint_range(0.5, 1.5) = 0.90;
-uniform float shadow_lift : hint_range(0.0, 0.25) = 0.06;
-uniform float scanline_strength : hint_range(0.0, 0.20) = 0.04;
-uniform float vignette_strength : hint_range(0.0, 0.5) = 0.10;
+// --- Color controls ---
+uniform float brightness : hint_range(0.0, 2.0) = 1.02;
+uniform float contrast   : hint_range(0.0, 2.0) = 1.08;
+uniform float saturation : hint_range(0.0, 2.0) = 1.10;
+uniform float gamma      : hint_range(0.2, 3.0) = 1.05;
 
-// animated noise
-uniform float noise_strength : hint_range(0.0, 0.12) = 0.025;
-uniform float noise_speed : hint_range(0.0, 60.0) = 18.0;
+// --- CRT geometry / lens ---
+uniform float curvature     : hint_range(0.0, 0.40) = 0.14;
+uniform float corner_soften : hint_range(0.0, 0.20) = 0.06;
+uniform float vignette      : hint_range(0.0, 1.00) = 0.38;
 
-// subtle always-on line wobble (in PIXELS, not UV)
-uniform float base_jitter_px : hint_range(0.0, 0.50) = 0.08;
-uniform float base_jitter_speed : hint_range(0.0, 40.0) = 12.0;
+// --- Scanlines / phosphor ---
+uniform float scanline_strength : hint_range(0.0, 2.0) = 0.95;
+uniform float scanline_density  : hint_range(0.5, 3.0) = 1.15; // 1.0 = native-ish
+uniform float interlace_strength: hint_range(0.0, 1.0) = 0.20;
 
-// glitch bursts
-uniform float glitchiness : hint_range(0.0, 1.0) = 0.18;
-uniform float glitch_rate : hint_range(0.0, 20.0) = 6.0;
-uniform float glitch_shift_px : hint_range(0.0, 8.0) = 1.8;
-uniform float glitch_window_min : hint_range(0.0, 0.20) = 0.03;
-uniform float glitch_window_max : hint_range(0.0, 0.35) = 0.10;
+// Shadow mask (RGB triads). Turn down if you hate the “screen door”.
+uniform float mask_strength : hint_range(0.0, 1.0) = 0.22;
+uniform float mask_scale    : hint_range(0.5, 4.0) = 1.0; // bigger = chunkier triads
 
-// moving blue tracking band
-uniform float blue_band_start_y : hint_range(0.0, 1.0) = 0.45;
-uniform float blue_band_speed : hint_range(-1.5, 1.5) = 0.06;
-uniform float blue_band_width : hint_range(0.002, 0.20) = 0.035;
-uniform float blue_band_strength : hint_range(0.0, 0.30) = 0.10;
-uniform float blue_band_glitch : hint_range(0.0, 1.0) = 0.25;
-uniform float blue_band_distort_px : hint_range(0.0, 6.0) = 1.2;
+// --- VHS/VCR artifacts ---
+uniform float chroma_offset_px : hint_range(0.0, 6.0) = 1.6; // RGB split in pixels
+uniform float luma_smear_px    : hint_range(0.0, 8.0) = 2.2; // horizontal smear
+uniform float jitter_px        : hint_range(0.0, 8.0) = 1.8; // per-line horizontal jitter
+uniform float wobble_px        : hint_range(0.0, 10.0) = 1.5; // slow wave wobble
 
-float hash11(float p) {
-	return fract(sin(p * 127.1) * 43758.5453123);
+uniform float tape_noise       : hint_range(0.0, 1.0) = 0.22; // grain + specks
+uniform float tape_lines       : hint_range(0.0, 1.0) = 0.35; // horizontal “tracking” lines
+
+uniform float roll_speed       : hint_range(0.0, 1.5) = 0.10; // vertical roll bar speed
+uniform float roll_strength    : hint_range(0.0, 0.6) = 0.15; // roll bar intensity
+
+// --- Bloom-ish glow (cheap) ---
+uniform float glow_strength  : hint_range(0.0, 2.0) = 0.25;
+uniform float glow_threshold : hint_range(0.0, 1.0) = 0.65;
+
+// TIME is a built-in global in CanvasItem shaders. :contentReference[oaicite:2]{index=2}
+float hash11(float n) {
+	return fract(sin(n) * 43758.5453123);
 }
 
-float hash21(vec2 p) {
+float hash12(vec2 p) {
 	return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453123);
 }
 
-vec3 sat_adjust(vec3 c, float s) {
-	float l = dot(c, vec3(0.299, 0.587, 0.114));
-	return mix(vec3(l), c, s);
+vec2 crt_curve(vec2 uv, float k) {
+	// Barrel distortion style curve.
+	vec2 cc = uv * 2.0 - 1.0;
+	vec2 d  = cc * cc;
+	cc *= 1.0 + k * vec2(d.y, d.x);
+	return cc * 0.5 + 0.5;
 }
 
-vec3 sample_screen(vec2 uv, float lod) {
-	return textureLod(screen_texture, clamp(uv, vec2(0.0), vec2(1.0)), lod).rgb;
+float inside01(vec2 uv) {
+	// 1.0 if uv in [0..1], else 0.0
+	return step(0.0, uv.x) * step(uv.x, 1.0) * step(0.0, uv.y) * step(uv.y, 1.0);
+}
+
+vec3 apply_color_controls(vec3 c) {
+	// brightness
+	c *= brightness;
+
+	// contrast around 0.5
+	c = mix(vec3(0.5), c, contrast);
+
+	// saturation
+	float l = dot(c, vec3(0.2126, 0.7152, 0.0722));
+	c = mix(vec3(l), c, saturation);
+
+	// gamma-ish
+	c = pow(max(c, vec3(0.0)), vec3(1.0 / max(gamma, 0.0001)));
+	return c;
+}
+
+vec3 triad_mask(vec2 frag_xy) {
+	// Simple RGB triad mask across X.
+	float x = floor(frag_xy.x / max(mask_scale, 0.0001));
+	float m = mod(x, 3.0);
+	// Slightly tinted triads
+	if (m < 1.0) return vec3(1.10, 0.85, 0.85);
+	if (m < 2.0) return vec3(0.85, 1.10, 0.85);
+	return vec3(0.85, 0.85, 1.10);
+}
+
+vec3 sample_screen(vec2 uv) {
+	// Use textureLod at LOD 0 like the docs show. :contentReference[oaicite:3]{index=3}
+	return textureLod(screen_texture, uv, 0.0).rgb;
 }
 
 void fragment() {
-	vec2 px = SCREEN_PIXEL_SIZE;
+	vec2 px   = SCREEN_PIXEL_SIZE;
+	vec2 res  = 1.0 / px;
+	float t   = TIME;
+
+	// Start from screen UV
 	vec2 uv = SCREEN_UV;
-	float t = TIME;
-	float line_id = floor(FRAGCOORD.y);
 
-	// mild blocky grouping to kill digital sharpness
-	vec2 block = px * pixel_size;
-	uv = floor(uv / block) * block;
+	// --- VHS line jitter (per scanline) ---
+	float y_line = floor(uv.y * res.y);
+	float jitter = (hash11(y_line + floor(t * 15.0) * 37.0) - 0.5) * 2.0;
+	uv.x += jitter * (jitter_px * px.x);
 
-	// subtle per-line wobble that updates over time
-	float line_wobble = hash21(vec2(line_id, floor(t * base_jitter_speed)));
-	uv.x += (line_wobble - 0.5) * base_jitter_px * px.x;
+	// Slow wobble
+	uv.x += sin(uv.y * 8.0 + t * 1.2) * (wobble_px * px.x);
 
-	// occasional glitch burst window
-	float burst_id = floor(t * glitch_rate);
-	float burst_rand = hash11(burst_id + 3.17);
-	float burst_on = step(1.0 - glitchiness, burst_rand);
+	// CRT curve
+	vec2 cuv = crt_curve(uv, curvature);
+	float in_bounds = inside01(cuv);
 
-	float glitch_center = hash11(burst_id + 8.41);
-	float glitch_half_height = mix(glitch_window_min, glitch_window_max, hash11(burst_id + 11.72));
-	float glitch_mask = burst_on * (1.0 - smoothstep(0.0, glitch_half_height, abs(SCREEN_UV.y - glitch_center)));
+	// Rounded corners (soft clip)
+vec2 d = abs(cuv - 0.5) * 2.0;      // 0 at center, ~1 at edges
+float edge = max(d.x, d.y);
 
-	float glitch_line = hash21(vec2(line_id, burst_id + 31.3));
-	uv.x += (glitch_line - 0.5) * glitch_shift_px * px.x * glitch_mask;
+// 1 in center, fades to 0 near edges
+float corner_mask = 1.0 - smoothstep(1.0 - corner_soften, 1.0, edge);
 
-	// moving blue band with occasional jumpiness
-	float band_tick = floor(t * 10.0);
-	float band_jump = (hash11(band_tick + 55.2) - 0.5) * blue_band_glitch * 0.25;
-	float band_center = fract(blue_band_start_y + t * blue_band_speed + band_jump);
 
-	float band_dist = abs(SCREEN_UV.y - band_center);
-	band_dist = min(band_dist, 1.0 - band_dist); // wrap nicely at top/bottom
-
-	float band_mask = exp(
-		-(band_dist * band_dist) /
-		max(blue_band_width * blue_band_width, 0.000001)
-	);
-
-	float band_line = hash21(vec2(line_id, floor(t * 22.0) + 77.0));
-	uv.x += (band_line - 0.5) * blue_band_distort_px * px.x * band_mask;
-
-	// chroma split
-	vec2 chroma_off = vec2(chroma_offset_px * px.x, 0.0);
-	float r = sample_screen(uv + chroma_off, lod_blur).r;
-	float g = sample_screen(uv, lod_blur).g;
-	float b = sample_screen(uv - chroma_off, lod_blur).b;
-
+	// --- Chromatic aberration / VHS chroma shift ---
+	vec2 chroma = vec2(chroma_offset_px * px.x, 0.0);
+	float r = sample_screen(cuv + chroma).r;
+	float g = sample_screen(cuv).g;
+	float b = sample_screen(cuv - chroma).b;
 	vec3 col = vec3(r, g, b);
 
-	// overall VHS grade
-	col = sat_adjust(col, saturation);
-	col = (col - vec3(0.5)) * contrast + vec3(0.5);
-	col += shadow_lift;
+	// --- Luma smear (horizontal) ---
+	float smear = luma_smear_px * px.x;
+	vec3 s1 = sample_screen(cuv + vec2(smear, 0.0));
+	vec3 s2 = sample_screen(cuv - vec2(smear, 0.0));
+	col = mix(col, (col + s1 + s2) / 3.0, 0.35);
 
-	// blue tracking tint
-	col += vec3(0.02, 0.07, 0.18) * band_mask * blue_band_strength;
+	// --- Scanlines ---
+	float scan = sin((cuv.y * res.y) * 3.14159 * scanline_density);
+	float scan_mul = 1.0 - scanline_strength * (0.5 - 0.5 * scan); // darker troughs
+	col *= scan_mul;
 
-	// animated grain + line snow
-	float grain = hash21(
-		floor(FRAGCOORD.xy * 0.75) +
-		vec2(floor(t * noise_speed), floor(t * noise_speed * 0.73))
-	);
+	// --- Interlacing (alternate rows “flicker”) ---
+	float field = mod(floor(FRAGCOORD.y) + floor(t * 60.0), 2.0);
+	col *= 1.0 - interlace_strength * field * 0.10;
 
-	float line_snow = hash21(vec2(line_id, floor(t * noise_speed * 0.5) + 100.0));
+	// --- Rolling tracking bar ---
+	float roll_y = fract(t * max(roll_speed, 0.0001));
+	float dist = abs(cuv.y - roll_y);
+	float bar = smoothstep(0.20, 0.0, dist); // wide soft bar
+	col += bar * roll_strength * vec3(0.12, 0.12, 0.12);
 
-	col += ((grain - 0.5) * 0.7 + (line_snow - 0.5) * 0.3) * noise_strength;
+	// --- Tape lines (random horizontal streaks) ---
+	float line_n = hash11(y_line * 0.7 + floor(t * 12.0) * 11.0);
+	float line = smoothstep(0.985, 1.0, line_n) * tape_lines;
+	col += line * vec3(0.18, 0.18, 0.18);
 
-	// scanlines
-	float scan = sin((FRAGCOORD.y + t * 8.0) * 1.1) * 0.5 + 0.5;
-	col *= 1.0 - scan * scanline_strength;
+	// --- Grain / specks ---
+	float n = hash12(FRAGCOORD.xy + vec2(t * 120.0, t * 90.0));
+	float grain = (n - 0.5) * 2.0;
+	col += grain * (tape_noise * 0.06);
 
-	// vignette
-	vec2 centered = SCREEN_UV * 2.0 - 1.0;
-	float vig = dot(centered, centered);
-	col *= 1.0 - vig * vignette_strength;
+	// Occasional white specks
+	float speck = smoothstep(0.995, 1.0, hash12(FRAGCOORD.xy * 0.73 + t * 40.0));
+	col += speck * (tape_noise * 0.25);
 
-	COLOR = vec4(clamp(col, vec3(0.0), vec3(1.0)), 1.0);
+	// --- Cheap glow (cross blur on brights) ---
+	vec3 c0 = col;
+	vec3 cx1 = sample_screen(cuv + vec2(px.x, 0.0));
+	vec3 cx2 = sample_screen(cuv - vec2(px.x, 0.0));
+	vec3 cy1 = sample_screen(cuv + vec2(0.0, px.y));
+	vec3 cy2 = sample_screen(cuv - vec2(0.0, px.y));
+	vec3 blur = (c0 + cx1 + cx2 + cy1 + cy2) / 5.0;
+	float br = dot(blur, vec3(0.2126, 0.7152, 0.0722));
+	vec3 glow = max(blur - vec3(glow_threshold), vec3(0.0));
+	col += glow * glow_strength * (0.5 + 0.5 * br);
+
+	// --- Vignette ---
+	vec2 v = cuv - 0.5;
+	float vig = smoothstep(0.9, 0.2, dot(v, v) * 2.2);
+	col *= mix(1.0 - vignette, 1.0, vig);
+
+	// --- Shadow mask triads ---
+	vec3 mask = triad_mask(FRAGCOORD.xy);
+	col *= mix(vec3(1.0), mask, mask_strength);
+
+	// Color grading last
+	col = apply_color_controls(col);
+
+	// Apply bounds + rounded corners (outside = black)
+	col *= in_bounds * corner_mask;
+
+	COLOR = vec4(col, 1.0);
 }

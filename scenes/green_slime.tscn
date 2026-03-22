@@ -117,7 +117,6 @@ position = Vector2(0, -12)
 sprite_frames = SubResource("SpriteFrames_g40cl")
 animation = &"idle"
 autoplay = "idle"
-frame_progress = 0.46258405
 
 [node name="Killzone" parent="." unique_id=1049673568 instance=ExtResource("2_p2gj0")]
 position = Vector2(0, -8)
@@ -130,6 +129,14 @@ shape = SubResource("RectangleShape2D_cxm07")
 position = Vector2(0, -7)
 target_position = Vector2(10, 0)
 
+[node name="RayCastLeftDiag" type="RayCast2D" parent="." unique_id=1299441513]
+position = Vector2(0, -7)
+target_position = Vector2(10, 12)
+
 [node name="RayCastRight" type="RayCast2D" parent="." unique_id=216407246]
 position = Vector2(0, -7)
 target_position = Vector2(-10, 0)
+
+[node name="RayCastRightDiag" type="RayCast2D" parent="." unique_id=1403566176]
+position = Vector2(0, -7)
+target_position = Vector2(-10, 12)
