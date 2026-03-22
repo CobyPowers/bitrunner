@@ -196,7 +196,6 @@ tile_set = ExtResource("4_wu84c")
 [node name="Lava" parent="." unique_id=1324702339 instance=ExtResource("6_rtw2f")]
 position = Vector2(544, 584)
 scale = Vector2(7, 7)
-rise_speed = 0.0
 
 [node name="Player" parent="." unique_id=2048558767 instance=ExtResource("5_8ln24")]
 position = Vector2(128, 432)

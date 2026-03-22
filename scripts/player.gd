@@ -1,11 +1,14 @@
 extends CharacterBody2D
 
+@onready var game_manager = get_node_or_null("/root/Game/GameManager")
+
 @export var speed = 100.0
 @export var dash_speed = 150.0
 @export var jump_velocity = 300.0
 @export var gravity_scale = 1
 
 @export var disabled = false
+@export var invinsible = false
 
 @onready var animated_sprite = $AnimatedSprite2D
 @onready var jump_sfx = $Jump
@@ -16,18 +19,33 @@ var dashing = false
 func overcharge():
 	speed *= 3.5
 	dash_speed *= 3.5
-	jump_velocity *= 2.0
-	gravity_scale *= 3.5
+	jump_velocity *= 3.0
+	gravity_scale *= 8.0
+	invinsible = true
 
 func reset():
 	speed = 100.0
 	dash_speed = 150.0
 	jump_velocity = 300.0
 	gravity_scale = 1
+	invinsible = false
 
-func kill():
-	hit_sfx.play()
-	disabled = true
+func hit() -> bool:
+	# Only apply hits if the player is active and not invinsible
+	if not invinsible and not disabled:
+		disabled = true
+		hit_sfx.play()
+		animated_sprite.play("hit")
+		animated_sprite.connect("animation_finished", func(): _kill(), CONNECT_ONE_SHOT)
+	# Return whether or not the hit was successful
+	return not invinsible
+
+func _kill():
+	animated_sprite.play("death")
+	animated_sprite.connect("animation_finished", func(): 
+		if game_manager:
+			game_manager.trigger_game_over()
+	, CONNECT_ONE_SHOT)
 
 func _physics_process(delta: float) -> void:
 	# Add the gravity
@@ -36,6 +54,8 @@ func _physics_process(delta: float) -> void:
 
 	# If disabled, don't process input
 	if disabled:
+		velocity.x = 0
+		move_and_slide()
 		return
 
 	# Handle jump
