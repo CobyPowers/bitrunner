@@ -10,20 +10,36 @@
 [ext_resource type="PackedScene" uid="uid://cnev7kmduj1c5" path="res://scenes/lava.tscn" id="6_rtw2f"]
 [ext_resource type="PackedScene" uid="uid://lnfpysj7noy4" path="res://scenes/crt_filter.tscn" id="9_jk1qb"]
 
-[sub_resource type="LabelSettings" id="LabelSettings_jk1qb"]
-font = ExtResource("3_bqqt6")
-font_color = Color(1, 0.9583333, 0.9, 1)
-outline_color = Color(0.078431375, 0.078431375, 0.07058824, 1)
-shadow_size = 8
-shadow_color = Color(0, 0, 0, 1)
-shadow_offset = Vector2(0, 0)
-
 [sub_resource type="LabelSettings" id="LabelSettings_bqqt6"]
 font = ExtResource("2_ekxnf")
 font_size = 40
 font_color = Color(1, 0.9583333, 0.9, 1)
 outline_color = Color(0.078431375, 0.078431375, 0.07058824, 1)
 shadow_size = 16
+shadow_color = Color(0, 0, 0, 1)
+shadow_offset = Vector2(0, 0)
+
+[sub_resource type="LabelSettings" id="LabelSettings_jk1qb"]
+font = ExtResource("3_bqqt6")
+font_color = Color(1, 0.9583333, 0.9, 1)
+outline_color = Color(0.078431375, 0.078431375, 0.07058824, 1)
+shadow_size = 6
+shadow_color = Color(0, 0, 0, 1)
+shadow_offset = Vector2(0, 0)
+
+[sub_resource type="LabelSettings" id="LabelSettings_5dd4i"]
+line_spacing = 12.0
+font = ExtResource("3_bqqt6")
+font_size = 22
+shadow_size = 8
+shadow_color = Color(0, 0, 0, 1)
+shadow_offset = Vector2(0, 0)
+
+[sub_resource type="LabelSettings" id="LabelSettings_lgwnu"]
+line_spacing = 12.0
+font = ExtResource("2_ekxnf")
+font_size = 26
+shadow_size = 8
 shadow_color = Color(0, 0, 0, 1)
 shadow_offset = Vector2(0, 0)
 
@@ -39,51 +55,18 @@ fill_to = Vector2(0.14102565, 0.10683761)
 [node name="Main Menu" type="Node2D" unique_id=183572793]
 script = ExtResource("1_l6cm7")
 
-[node name="UI" type="CanvasLayer" parent="." unique_id=69706106]
-
-[node name="AuthorText" type="Label" parent="UI" unique_id=2097559901]
-anchors_preset = 1
-anchor_left = 1.0
-anchor_right = 1.0
-offset_left = -268.0
-offset_top = 184.0
-offset_right = -80.0
-offset_bottom = 200.0
-grow_horizontal = 0
-pivot_offset_ratio = Vector2(0.5, 0.5)
-text = "By Coby Powers"
-label_settings = SubResource("LabelSettings_jk1qb")
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="TitleText" type="Label" parent="UI" unique_id=1559597710]
-anchors_preset = 1
-anchor_left = 1.0
-anchor_right = 1.0
-offset_left = -480.0
-offset_top = 104.0
-offset_right = -44.0
-offset_bottom = 200.0
-grow_horizontal = 0
-pivot_offset_ratio = Vector2(0.5, 0.5)
-text = "Bit Runner"
-label_settings = SubResource("LabelSettings_bqqt6")
-horizontal_alignment = 1
-vertical_alignment = 1
-uppercase = true
-
-[node name="Buttons" type="Control" parent="UI" unique_id=1720415515]
+[node name="Buttons" type="Control" parent="." unique_id=1720415515]
 layout_mode = 3
 anchors_preset = 1
 anchor_left = 1.0
 anchor_right = 1.0
-offset_left = -440.0
-offset_top = 216.0
-offset_right = -40.0
-offset_bottom = 448.0
+offset_left = 176.0
+offset_top = -97.0
+offset_right = 576.0
+offset_bottom = 135.0
 grow_horizontal = 0
 
-[node name="StartButton" type="Button" parent="UI/Buttons" unique_id=701776046]
+[node name="StartButton" type="Button" parent="Buttons" unique_id=701776046]
 layout_mode = 1
 anchors_preset = 1
 anchor_left = 1.0
@@ -102,7 +85,7 @@ text = "Start"
 flat = true
 alignment = 2
 
-[node name="CreditsButton" type="Button" parent="UI/Buttons" unique_id=873985986]
+[node name="CreditsButton" type="Button" parent="Buttons" unique_id=873985986]
 layout_mode = 1
 anchors_preset = 1
 anchor_left = 1.0
@@ -123,7 +106,7 @@ text = "Credits
 flat = true
 alignment = 2
 
-[node name="QuitButton" type="Button" parent="UI/Buttons" unique_id=113537431]
+[node name="QuitButton" type="Button" parent="Buttons" unique_id=113537431]
 layout_mode = 1
 anchors_preset = 1
 anchor_left = 1.0
@@ -143,24 +126,109 @@ text = "Quit"
 flat = true
 alignment = 2
 
-[node name="CRTFilter" parent="UI" unique_id=998139678 instance=ExtResource("9_jk1qb")]
-mouse_filter = 2
+[node name="BackButton" type="Button" parent="Buttons" unique_id=1434328797]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -1544.0
+offset_top = -125.0
+offset_right = -1413.0
+offset_bottom = -84.13617
+grow_horizontal = 0
+scale = Vector2(1.42718, 1.5661765)
+theme_override_colors/font_color = Color(1, 0.95686275, 0.9019608, 1)
+theme_override_colors/font_pressed_color = Color(0.97185, 0.43175912, 0.9601155, 1)
+theme_override_colors/font_hover_color = Color(0.97701615, 0.593401, 0.9608422, 1)
+theme_override_fonts/font = ExtResource("3_bqqt6")
+theme_override_font_sizes/font_size = 16
+text = "Back  ->"
+flat = true
+alignment = 0
 
-[node name="Blackout" parent="UI" unique_id=984022916 instance=ExtResource("5_jk1qb")]
+[node name="TitleText" type="Label" parent="." unique_id=1559597710]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = 136.0
+offset_top = -215.99997
+offset_right = 572.0
+offset_bottom = -119.99997
+grow_horizontal = 0
+pivot_offset_ratio = Vector2(0.5, 0.5)
+text = "Bit Runner"
+label_settings = SubResource("LabelSettings_bqqt6")
+horizontal_alignment = 1
+vertical_alignment = 1
+uppercase = true
 
-[node name="Music" type="AudioStreamPlayer2D" parent="." unique_id=1430058042]
-position = Vector2(0, 26)
-stream = ExtResource("2_tbmy8")
-volume_db = -10.0
-autoplay = true
-attenuation = 0.0
-bus = &"Music"
-parameters/looping = true
+[node name="AuthorText" type="Label" parent="." unique_id=2097559901]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = 348.0
+offset_top = -129.0
+offset_right = 536.0
+offset_bottom = -113.0
+grow_horizontal = 0
+pivot_offset_ratio = Vector2(0.5, 0.5)
+text = "By Coby Powers"
+label_settings = SubResource("LabelSettings_jk1qb")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="SpriteCreditText" type="Label" parent="." unique_id=715863659]
+offset_left = -1528.0
+offset_top = -184.0
+offset_right = -986.0
+offset_bottom = -126.0
+text = "Knight/Slime/Platforms:
+    https://analogstudios.itch.io"
+label_settings = SubResource("LabelSettings_5dd4i")
+
+[node name="CCNoticeText" type="Label" parent="." unique_id=2009212016]
+offset_left = -1472.0
+offset_top = -288.0
+offset_right = -930.0
+offset_bottom = -222.0
+text = "Creative Commons 
+Zero (CC0)"
+label_settings = SubResource("LabelSettings_lgwnu")
+
+[node name="AudioCreditText" type="Label" parent="." unique_id=2026970673]
+offset_left = -1792.0
+offset_top = 150.99997
+offset_right = -1209.0
+offset_bottom = 243.99997
+text = "SFX: Brackeys
+Music: https://pixabay.com/users/
+         djartmusic-46653586/"
+label_settings = SubResource("LabelSettings_5dd4i")
+
+[node name="TilesetCreditText" type="Label" parent="." unique_id=864495630]
+offset_left = -1592.0
+offset_top = -88.00003
+offset_right = -1050.0
+offset_bottom = -30.00003
+text = "World Tileset:
+    https://rottingpixels.itch.io"
+label_settings = SubResource("LabelSettings_5dd4i")
+
+[node name="FontCreditText" type="Label" parent="." unique_id=208010408]
+offset_left = -1704.0
+offset_top = -3.0517578e-05
+offset_right = -1162.0
+offset_bottom = 127.99997
+text = "Pixel Operator Font:
+    HarvettFox96
+    https://www.dafont.com/
+      pixel-operator.font"
+label_settings = SubResource("LabelSettings_5dd4i")
 
 [node name="Foreground" type="TileMapLayer" parent="." unique_id=459629760]
-position = Vector2(35, -20)
+position = Vector2(-484.99988, -340)
 scale = Vector2(7, 7)
-tile_map_data = PackedByteArray("AAAAAAUAAAAEAAEAAAABAAUAAAAFAAEAAAACAAUAAAAFAAEAAAADAAUAAAAEAAEAAAAAAAQAAAAEAAAAAAABAAQAAAAEAAAAAAACAAQAAAAEAAAAAAAEAAUAAAAFAAAAAAAFAAUAAAAEAAEAAAAGAAUAAAAEAAEAAAAHAAUAAAAFAAAAAAAGAAQAAAAFAAEAAAAHAAQAAAAEAAAAAAAIAAUAAAAEAAEAAAAJAAUAAAAFAAAAAAD//wQAAAAEAAAAAAAKAAUAAAAEAAEAAAD//wUAAAAFAAEAAAD//wYAAAAFAAEAAAAAAAYAAAAEAAEAAAABAAYAAAAFAAEAAAACAAYAAAAEAAEAAAADAAYAAAAEAAEAAAAEAAYAAAAEAAEAAAAFAAYAAAAFAAAAAAAGAAYAAAAEAAEAAAAHAAYAAAAEAAEAAAAIAAYAAAAEAAEAAAAJAAYAAAAEAAEAAAAKAAYAAAAFAAAAAAAIAAQAAAAEAAAAAAD//wEAAAAEAAEAAAAAAAEAAAAEAAEAAAABAAAAAAAFAAAAAAACAAAAAAAEAAEAAAD//wAAAAAFAAEAAAAAAAAAAAAEAAEAAAAFAAQAAAAEAAEAAAAGAAMAAAAEAAAAAAAFAAMAAAAEAAAAAAAEAAQAAAAEAAAAAAAFAAIAAAAHAAYAAAAEAAMAAAAIAAUAAAACAAMAAAAFAAUAAAACAAIAAAAFAAMAAAAHAAMAAAAEAAgAAAAJAAQAAAABAAcAAAADAAAAAAAKAAIAAAAEAAAAAAALAAIAAAAFAAAAAAAEAAEAAAAGAAAAAAAFAAEAAAADAAQAAAABAAcAAAA=")
+tile_map_data = PackedByteArray("AAAAAAUAAAAEAAEAAAABAAUAAAAFAAEAAAACAAUAAAAFAAEAAAADAAUAAAAEAAEAAAAAAAQAAAAEAAAAAAABAAQAAAAEAAAAAAACAAQAAAAEAAAAAAAEAAUAAAAFAAAAAAAFAAUAAAAEAAEAAAAGAAUAAAAEAAEAAAAHAAUAAAAFAAAAAAAGAAQAAAAFAAEAAAAHAAQAAAAEAAAAAAAIAAUAAAAEAAEAAAAJAAUAAAAFAAAAAAD//wQAAAAEAAAAAAAKAAUAAAAEAAEAAAD//wUAAAAFAAEAAAD//wYAAAAFAAEAAAAAAAYAAAAEAAEAAAABAAYAAAAFAAEAAAACAAYAAAAEAAEAAAADAAYAAAAEAAEAAAAEAAYAAAAEAAEAAAAFAAYAAAAFAAAAAAAGAAYAAAAEAAEAAAAHAAYAAAAEAAEAAAAIAAYAAAAEAAEAAAAJAAYAAAAEAAEAAAAKAAYAAAAFAAAAAAAIAAQAAAAEAAAAAAD//wEAAAAEAAEAAAAAAAEAAAAEAAEAAAABAAAAAAAFAAAAAAACAAAAAAAEAAEAAAD//wAAAAAFAAEAAAAAAAAAAAAEAAEAAAAFAAQAAAAEAAEAAAAGAAMAAAAEAAAAAAAFAAMAAAAEAAAAAAAEAAQAAAAEAAAAAAAFAAIAAAAHAAYAAAACAAMAAAAFAAUAAAACAAIAAAAFAAMAAAAHAAMAAAAEAAgAAAAJAAQAAAAFAAgAAAADAAAAAAAKAAIAAAAEAAAAAAALAAIAAAAFAAAAAAAEAAEAAAAGAAAAAAAFAAEAAAADAAQAAAABAAcAAAD+/wQAAAAEAAAAAAD9/wQAAAAEAAEAAAD8/wQAAAAEAAEAAAD7/wUAAAAEAAEAAAD6/wUAAAAEAAEAAAD5/wUAAAAEAAAAAAD0/wUAAAAEAAAAAAD9/wMAAAAEAAAAAAD8/wMAAAAEAAAAAAD7/wQAAAAFAAEAAAD6/wQAAAAEAAAAAAD7/wMAAAAEAAAAAAD+/wYAAAAEAAEAAAD9/wYAAAAFAAEAAAD8/wYAAAAEAAEAAAD7/wYAAAAEAAEAAAD6/wYAAAAFAAEAAAD5/wYAAAAEAAEAAAD4/wYAAAAFAAAAAAD3/wYAAAAEAAEAAAD2/wYAAAAEAAAAAAD1/wYAAAAEAAAAAAD0/wYAAAAFAAEAAAD8/wUAAAAFAAEAAAD9/wUAAAAEAAEAAAD+/wUAAAAEAAEAAAD+/wAAAAAEAAEAAAD9/wAAAAAFAAEAAAD8/wAAAAAEAAEAAAD7/wAAAAAFAAEAAAD0/wAAAAAFAAEAAAD0/wEAAAAFAAEAAAD1/wAAAAAEAAEAAAD2/wAAAAAEAAEAAAD1/wEAAAAEAAEAAAD0/wIAAAAEAAEAAAD9/wIAAAAEAAgAAAD+/wMAAAABAAcAAAAEAAMAAAAFAAcAAAA=")
 tile_set = ExtResource("4_wu84c")
 
 [node name="PointLight2D2" type="PointLight2D" parent="Foreground" unique_id=931650463]
@@ -179,6 +247,14 @@ energy = 0.4
 shadow_filter = 2
 texture = SubResource("GradientTexture2D_tbmy8")
 
+[node name="PointLight2D6" type="PointLight2D" parent="Foreground" unique_id=112975008]
+position = Vector2(-45.000015, 21.285719)
+scale = Vector2(1.6057142, 1.6057142)
+color = Color(0.2637792, 0.79708207, 0.9999996, 1)
+energy = 0.4
+shadow_filter = 2
+texture = SubResource("GradientTexture2D_tbmy8")
+
 [node name="PointLight2D4" type="PointLight2D" parent="Foreground" unique_id=1403200255]
 position = Vector2(124.14284, 25.714285)
 scale = Vector2(1.2345531, 1.2458371)
@@ -186,19 +262,27 @@ energy = 0.62
 shadow_filter = 2
 texture = SubResource("GradientTexture2D_tbmy8")
 
+[node name="PointLight2D5" type="PointLight2D" parent="Foreground" unique_id=1457714617]
+position = Vector2(-130.71431, 32.71429)
+scale = Vector2(2.5142848, 2.5372658)
+energy = 0.8
+shadow_filter = 2
+texture = SubResource("GradientTexture2D_tbmy8")
+
 [node name="Background" type="TileMapLayer" parent="." unique_id=1016841327]
 z_index = -1
-position = Vector2(35, -20)
+position = Vector2(-484.99988, -340)
 scale = Vector2(7, 7)
-tile_map_data = PackedByteArray("AAD//wQAAAACAA4AAAD//wUAAAACAA8AAAD//wYAAAACAA8AAAAAAAQAAAACAA4AAAAAAAUAAAACAA8AAAAAAAYAAAACAA8AAAABAAQAAAACAA4AAAABAAUAAAACAA8AAAABAAYAAAACAA8AAAACAAQAAAACAA4AAAACAAUAAAACAA8AAAACAAYAAAACAA8AAAADAAQAAAACAA4AAAADAAUAAAACAA8AAAADAAYAAAACAA8AAAAEAAQAAAACAA4AAAAEAAUAAAACAA8AAAAEAAYAAAACAA8AAAAFAAQAAAACAA4AAAAFAAUAAAACAA8AAAAFAAYAAAACAA8AAAAGAAQAAAACAA4AAAAGAAUAAAACAA8AAAAGAAYAAAACAA8AAAAHAAQAAAACAA4AAAAHAAUAAAACAA8AAAAHAAYAAAACAA8AAAAIAAQAAAACAA4AAAAIAAUAAAACAA8AAAAIAAYAAAACAA8AAAAJAAQAAAACAA4AAAAJAAUAAAACAA8AAAAJAAYAAAACAA8AAAD//wMAAAACAA0AAAAAAAMAAAACAA0AAAABAAMAAAACAA0AAAACAAMAAAACAA0AAAADAAMAAAACAA0AAAAEAAMAAAACAA0AAAAFAAMAAAACAA0AAAAGAAMAAAACAA0AAAAHAAMAAAACAA0AAAAIAAMAAAACAA0AAAAJAAMAAAACAA0AAAD//wIAAAACAA0AAAAAAAIAAAACAA0AAAABAAIAAAACAA0AAAACAAIAAAACAA0AAAADAAIAAAACAA0AAAAEAAIAAAACAA0AAAAFAAIAAAACAA0AAAAGAAIAAAACAA0AAAAHAAIAAAACAA0AAAAIAAIAAAACAA0AAAAJAAIAAAACAA0AAAD//wEAAAACAAwAAAAAAAEAAAACAAwAAAABAAEAAAACAAwAAAACAAEAAAACAAwAAAADAAEAAAACAAwAAAAEAAEAAAACAAwAAAAFAAEAAAACAAwAAAAGAAEAAAACAAwAAAAHAAEAAAACAAwAAAAIAAEAAAACAAwAAAAJAAEAAAACAAwAAAD//wAAAAACAAsAAAAAAAAAAAACAAsAAAABAAAAAAACAAsAAAACAAAAAAACAAsAAAADAAAAAAACAAsAAAAEAAAAAAACAAsAAAAFAAAAAAACAAsAAAAGAAAAAAACAAsAAAAHAAAAAAACAAsAAAAIAAAAAAACAAsAAAAJAAAAAAACAAsAAAAKAAUAAAACAA8AAAAKAAYAAAACAA8AAAAKAAQAAAACAA4AAAAKAAIAAAACAA0AAAAKAAMAAAACAA0AAAAKAAEAAAACAAwAAAAKAAAAAAACAAsAAAA=")
+tile_map_data = PackedByteArray("AAD//wQAAAACAA4AAAD//wUAAAACAA8AAAD//wYAAAACAA8AAAAAAAQAAAACAA4AAAAAAAUAAAACAA8AAAAAAAYAAAACAA8AAAABAAQAAAACAA4AAAABAAUAAAACAA8AAAABAAYAAAACAA8AAAACAAQAAAACAA4AAAACAAUAAAACAA8AAAACAAYAAAACAA8AAAADAAQAAAACAA4AAAADAAUAAAACAA8AAAADAAYAAAACAA8AAAAEAAQAAAACAA4AAAAEAAUAAAACAA8AAAAEAAYAAAACAA8AAAAFAAQAAAACAA4AAAAFAAUAAAACAA8AAAAFAAYAAAACAA8AAAAGAAQAAAACAA4AAAAGAAUAAAACAA8AAAAGAAYAAAACAA8AAAAHAAQAAAACAA4AAAAHAAUAAAACAA8AAAAHAAYAAAACAA8AAAAIAAQAAAACAA4AAAAIAAUAAAACAA8AAAAIAAYAAAACAA8AAAAJAAQAAAACAA4AAAAJAAUAAAACAA8AAAAJAAYAAAACAA8AAAD//wMAAAACAA0AAAAAAAMAAAACAA0AAAABAAMAAAACAA0AAAACAAMAAAACAA0AAAADAAMAAAACAA0AAAAEAAMAAAACAA0AAAAFAAMAAAACAA0AAAAGAAMAAAACAA0AAAAHAAMAAAACAA0AAAAIAAMAAAACAAwAAAAJAAMAAAACAA0AAAD//wIAAAACAA0AAAAAAAIAAAACAA0AAAABAAIAAAACAA0AAAACAAIAAAACAAwAAAADAAIAAAACAA0AAAAEAAIAAAACAAwAAAAFAAIAAAACAAwAAAAGAAIAAAACAA0AAAAHAAIAAAACAAwAAAAIAAIAAAACAAsAAAAJAAIAAAACAAwAAAD//wEAAAACAAwAAAAAAAEAAAACAAwAAAABAAEAAAACAAwAAAACAAEAAAACAAsAAAADAAEAAAACAAwAAAAEAAEAAAACAAsAAAAFAAEAAAACAAsAAAAGAAEAAAACAAwAAAAHAAEAAAACAAsAAAAIAAEAAAACAAsAAAAJAAEAAAACAAsAAAD//wAAAAACAAsAAAAAAAAAAAACAAsAAAABAAAAAAACAAsAAAACAAAAAAACAAsAAAADAAAAAAACAAsAAAAEAAAAAAACAAsAAAAFAAAAAAACAAsAAAAGAAAAAAACAAsAAAAHAAAAAAACAAsAAAAIAAAAAAACAAsAAAAJAAAAAAACAAsAAAAKAAUAAAACAA8AAAAKAAYAAAACAA8AAAAKAAQAAAACAA4AAAAKAAIAAAACAA0AAAAKAAMAAAACAA0AAAAKAAEAAAACAAwAAAAKAAAAAAACAAsAAAD+/wYAAAACAA8AAAD9/wYAAAACAA8AAAD8/wYAAAACAA8AAAD7/wYAAAACAA8AAAD6/wYAAAACAA8AAAD5/wYAAAACAA8AAAD4/wYAAAACAA8AAAD3/wYAAAACAA8AAAD2/wYAAAACAA8AAAD1/wYAAAACAA8AAAD0/wYAAAACAA8AAAD0/wUAAAACAA8AAAD0/wQAAAACAA4AAAD1/wUAAAACAA8AAAD2/wUAAAACAA8AAAD3/wUAAAACAA8AAAD4/wUAAAACAA8AAAD5/wUAAAACAA8AAAD6/wUAAAACAA8AAAD7/wUAAAACAA8AAAD8/wUAAAACAA8AAAD9/wUAAAACAA8AAAD+/wUAAAACAA8AAAD+/wQAAAACAA4AAAD9/wQAAAACAA4AAAD8/wQAAAACAA4AAAD7/wQAAAACAA4AAAD6/wQAAAACAA4AAAD5/wQAAAACAA4AAAD4/wQAAAACAA4AAAD3/wQAAAACAA4AAAD2/wQAAAACAA4AAAD1/wQAAAACAA4AAAD+/wMAAAACAA0AAAD9/wMAAAACAA0AAAD8/wMAAAACAA0AAAD7/wMAAAACAAwAAAD6/wMAAAACAAwAAAD5/wMAAAACAAwAAAD4/wMAAAACAAwAAAD3/wMAAAACAA0AAAD2/wMAAAACAA0AAAD1/wMAAAACAA0AAAD0/wMAAAACAA0AAAD0/wIAAAACAAwAAAD1/wIAAAACAAwAAAD2/wIAAAACAAwAAAD3/wIAAAACAAwAAAD4/wIAAAACAAsAAAD5/wIAAAACAAsAAAD6/wIAAAACAAsAAAD7/wIAAAACAAsAAAD8/wIAAAACAAwAAAD9/wIAAAACAAwAAAD+/wIAAAACAAwAAAD+/wEAAAACAAsAAAD9/wEAAAACAAsAAAD8/wEAAAACAAsAAAD7/wEAAAACAAsAAAD6/wEAAAACAAsAAAD5/wEAAAACAAsAAAD4/wEAAAACAAsAAAD3/wEAAAACAAsAAAD2/wEAAAACAAsAAAD1/wEAAAACAAsAAAD0/wEAAAACAAsAAAD0/wAAAAACAAsAAAD1/wAAAAACAAsAAAD2/wAAAAACAAsAAAD3/wAAAAACAAsAAAD4/wAAAAACAAsAAAD5/wAAAAACAAsAAAD6/wAAAAACAAsAAAD7/wAAAAACAAsAAAD8/wAAAAACAAsAAAD9/wAAAAACAAsAAAD+/wAAAAACAAsAAAA=")
 tile_set = ExtResource("4_wu84c")
 
 [node name="Lava" parent="." unique_id=1324702339 instance=ExtResource("6_rtw2f")]
-position = Vector2(544, 584)
+position = Vector2(24, 264.00003)
 scale = Vector2(7, 7)
+rise_speed = 0
 
 [node name="Player" parent="." unique_id=2048558767 instance=ExtResource("5_8ln24")]
-position = Vector2(128, 432)
+position = Vector2(-392, 112)
 scale = Vector2(9, 9)
 speed = 0.0
 dash_speed = 0.0
@@ -206,9 +290,30 @@ jump_velocity = 0.0
 gravity_scale = 0
 disabled = true
 
+[node name="Camera2D" type="Camera2D" parent="." unique_id=44446206]
+position_smoothing_enabled = true
+
+[node name="Music" type="AudioStreamPlayer2D" parent="." unique_id=1430058042]
+position = Vector2(0, 26)
+stream = ExtResource("2_tbmy8")
+volume_db = -10.0
+pitch_scale = 0.8
+autoplay = true
+attenuation = 0.0
+bus = &"Music"
+parameters/looping = true
+
 [node name="CanvasModulate" type="CanvasModulate" parent="." unique_id=142348287]
 color = Color(0.17641899, 0.17641914, 0.17641902, 1)
 
-[connection signal="pressed" from="UI/Buttons/StartButton" to="." method="_on_start_button_pressed"]
-[connection signal="pressed" from="UI/Buttons/CreditsButton" to="." method="_on_credits_button_pressed"]
-[connection signal="pressed" from="UI/Buttons/QuitButton" to="." method="_on_quit_button_pressed"]
+[node name="UI" type="CanvasLayer" parent="." unique_id=69706106]
+
+[node name="CRTFilter" parent="UI" unique_id=998139678 instance=ExtResource("9_jk1qb")]
+mouse_filter = 2
+
+[node name="Blackout" parent="UI" unique_id=984022916 instance=ExtResource("5_jk1qb")]
+
+[connection signal="pressed" from="Buttons/StartButton" to="." method="_on_start_button_pressed"]
+[connection signal="pressed" from="Buttons/CreditsButton" to="." method="_on_credits_button_pressed"]
+[connection signal="pressed" from="Buttons/QuitButton" to="." method="_on_quit_button_pressed"]
+[connection signal="pressed" from="Buttons/BackButton" to="." method="_on_back_button_pressed"]

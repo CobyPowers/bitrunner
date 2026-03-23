@@ -15,8 +15,8 @@ var advancing = false
 func advance(new_position: Vector2, headstart: float = 0):
 	advancing = true
 	var tween = get_tree().create_tween().set_ignore_time_scale(true).set_trans(EASE_STYLE).set_ease(EASE_DIRECTION)
-	tween.tween_property(self, "position:y", new_position.y, LAVA_RISE_DURATION)
-	tween.connect("finished", func(): advancing = false; print(position, new_position + Vector2.UP * headstart * rise_speed), CONNECT_ONE_SHOT)
+	tween.tween_property(self, "position:y", new_position.y + headstart * rise_speed, LAVA_RISE_DURATION)
+	tween.connect("finished", func(): advancing = false)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:

@@ -13,7 +13,7 @@ const MUSIC_EASE_DURATION = 1.5
 const DEFAULT_CRT_CURVATURE = 0
 const DEFAULT_CRT_CHROMA_OFFSET = 1.5
 
-const MUSIC_DISTORTION_DRIVE = 0.3
+const MUSIC_DISTORTION_DRIVE = 0.35
 
 const RAGE_MODE_CAMERA_ZOOM = Vector2(0.25, 0.25)
 const RAGE_MODE_CAMERA_TILT = -3.0
@@ -25,7 +25,7 @@ const RAGE_MODE_CRT_CHROMA_OFFSET = 3.0
 const RAGE_MODE_DURATION = 15
 const RAGE_MODE_WAIT = 60
 
-const PAUSED_CAMERA_ZOOM = Vector2(0.25, 0.25)
+const PAUSED_CAMERA_ZOOM = Vector2(1.5, 1.5)
 const PAUSED_CAMERA_TILT = -3.0
 const PAUSED_MUSIC_PITCH = 0.6
 const PAUSED_CRT_CURVATURE = 0.03
@@ -50,13 +50,14 @@ const GAME_OVER_CHROMA_OFFSET = 3.0
 @onready var rage_remaining_timer_text = get_node("../UI/RageUI/RageRemainingTimerText")
 @onready var score_text = get_node("../UI/ScoreText")
 @onready var crt_filter = get_node("../UI/CRTFilter")
+@onready var red_filter = get_node("../UI/RedFilter")
 @onready var blackout = get_node("../UI/Blackout")
 
 @onready var init_camera_zoom = camera.zoom
 @onready var init_rage_text_pos = rage_text.position
 @onready var init_rage_fluff_text_pos = rage_fluff_text.position
 
-@export var debug_mode = true
+@export var debug_mode = false
 var rage_mode = false
 var rage_mode_starting = false
 var game_over = false
@@ -69,6 +70,8 @@ func reset_screen(reset_music: bool = true):
 	tilt_camera()
 	tween_crt_filter_curvature()
 	tween_crt_filter_chroma_offset()
+	disable_audio_effects()
+	tween_ui_alpha(red_filter)
 	
 	if reset_music:
 		tween_music_pitch()
@@ -123,8 +126,8 @@ func tween_music_pitch(value: float = 1):
 		value = RAGE_MODE_MUSIC_PITCH
 	create_game_tween().tween_property(music, "pitch_scale", value, MUSIC_EASE_DURATION)
 
-func tween_ui_alpha(ui: CanvasItem, value: float = 0):
-	create_game_tween().tween_property(ui, "modulate:a", value, CAMERA_EFFECT_EASE_DURATION)
+func tween_ui_alpha(ui: CanvasItem, value: float = 0, ease_transition: Tween.TransitionType = EASE_TRANSITION, duration: float = CAMERA_EFFECT_EASE_DURATION):
+	create_game_tween().set_trans(ease_transition).tween_property(ui, "modulate:a", value, duration)
 
 func enable_audio_effects(tween_duration: int = 0):
 	var distortion_effect = AudioServer.get_bus_effect(1, 1) as AudioEffectDistortion
@@ -150,6 +153,7 @@ func activate_rage_mode():
 	enable_audio_effects()
 	zoom_camera()
 	tilt_camera()
+	tween_ui_alpha(red_filter, 1)
 	tween_ui_alpha(rage_ui, 1)
 	tween_crt_filter_curvature()
 	tween_crt_filter_chroma_offset()
@@ -162,6 +166,7 @@ func deactivate_rage_mode():
 	
 	Engine.time_scale = 1
 	disable_audio_effects()
+	tween_ui_alpha(red_filter)
 	tween_ui_alpha(rage_ui)
 	reset_screen()
 	player.reset()
@@ -174,9 +179,8 @@ func trigger_game_over():
 	rage_mode_timer.stop()
 	game_over_timer.start()
 	
-	if rage_mode:
-		deactivate_rage_mode()
-		
+	deactivate_rage_mode()
+	reset_screen()
 	tween_ui_alpha(game_over_ui, 1)
 	tween_music_pitch(GAME_OVER_MUSIC_PITCH)
 	tween_crt_filter_chroma_offset(GAME_OVER_CHROMA_OFFSET)
@@ -246,8 +250,9 @@ func _on_rage_mode_timer_timeout() -> void:
 	else: # Rage mode is not active nor is it about to start
 		rage_mode_starting = true
 		enable_audio_effects(10)
-		zoom_camera(RAGE_MODE_CAMERA_ZOOM, MUSIC_DISTORTION_EASE_TRANSITION, 10)
-		tilt_camera(RAGE_MODE_CAMERA_TILT, MUSIC_DISTORTION_EASE_TRANSITION, 10)
+		zoom_camera(RAGE_MODE_CAMERA_ZOOM * 0.5, MUSIC_DISTORTION_EASE_TRANSITION, 10)
+		tilt_camera(RAGE_MODE_CAMERA_TILT * 0.5, MUSIC_DISTORTION_EASE_TRANSITION, 10)
+		tween_ui_alpha(red_filter, 0.5, MUSIC_DISTORTION_EASE_TRANSITION, 10)
 		tween_ui_alpha(rage_start_timer_text, 1)
 		tween_ui_alpha(rage_fluff_text, 1)
 		rage_mode_timer.wait_time = 10
